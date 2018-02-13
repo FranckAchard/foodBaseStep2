@@ -116,20 +116,15 @@ public class Food {
 		 */
 				
 		// objects for reading food file
-		//FileReader fReader= new FileReader(inputFile);
-		//BufferedReader bReader = new BufferedReader(fReader);
 		Path foodFilePath= Paths.get(foodFileName);
 		BufferedReader bReader= Files.newBufferedReader(foodFilePath);
 		String currentLine="";
 		String[] currentLineSplit= new String[6];
 
 		//  objects for writing in temp file
-		//FileWriter fWriter= new FileWriter(tempFile);
-		//BufferedWriter bWriter = new BufferedWriter(fWriter);
 		Path tempFilePath = Files.createTempFile(Paths.get(foodFileDir), "myTempFile", ".txt");	
-		//Paths.get(foodFileDir + "myTempFile.txt");
 		BufferedWriter bWriter= Files.newBufferedWriter(tempFilePath, StandardOpenOption.WRITE);
-		
+		tempFilePath.toFile().deleteOnExit();
 		// input food to delete
 		System.out.println("food name?");
 		delFood= input.nextLine();
