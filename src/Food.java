@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -10,22 +11,12 @@ import java.util.*;
  *
  */
 public class Food {
-
+	// class attributes
 	private static Scanner input = new Scanner(System.in);
 	private static String foodFileDir= "C:\\Users\\Utilisateur.UTILISA-8GFQHGM\\Documents\\Workspaces\\BD alimentaire\\";
 	private static String foodFileName= foodFileDir + "foodBase.csv";
 
-	/**
-	 * 
-	 */
-	public Food() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
+	// main function
 	public static void main(String[] args) throws IOException {
 		String menuChoice= "";
 		
@@ -122,21 +113,20 @@ public class Food {
 		   2. si ligne ne commence pas par l'aliment à supprimer, on écrit ligne dans fichier temp
 		   3. une fois le fichier données lu entièrement, le supprimer et renommer fichier temp en fichier données
 		 */
-		
-		// food file
-		File inputFile = new File(foodFileName);
-		
-		// temp file
-		File tempFile = new File(foodFileDir + "myTempFile.txt");
-		
+				
 		// objects for reading food file
-		FileReader fReader= new FileReader(inputFile);
-		BufferedReader bReader = new BufferedReader(fReader);
+		//FileReader fReader= new FileReader(inputFile);
+		//BufferedReader bReader = new BufferedReader(fReader);
+		Path foodFilePath= Paths.get(foodFileName);
+		BufferedReader bReader= Files.newBufferedReader(foodFilePath);
 		String currentLine="";
 
 		//  objects for writing in temp file
-		FileWriter fWriter= new FileWriter(tempFile);
-		BufferedWriter bWriter = new BufferedWriter(fWriter);
+		//FileWriter fWriter= new FileWriter(tempFile);
+		//BufferedWriter bWriter = new BufferedWriter(fWriter);
+		Path tempFilePath = Paths.get("myTempFile.txt");
+		Files.createFile(tempFilePath);
+		BufferedWriter bWriter= Files.newBufferedWriter(tempFilePath, StandardOpenOption.WRITE);
 		
 		// input food to delete
 		System.out.println("food name?");
@@ -158,8 +148,8 @@ public class Food {
 		// close
 		bReader.close();
 		bWriter.close();
-		fReader.close();
-		fWriter.close();
+		//fReader.close();
+		//fWriter.close();
 
 		// remove old foodFile
 		
@@ -171,14 +161,17 @@ public class Food {
 			System.out.println(foodFileName + " is not deleted!!!");
 		}
 		*/
-			
+		
 		// rename temp file to foodFileName
+		/*
 		if (tempFile.renameTo(inputFile)) {
 			System.out.println("rename OK");
 		} else {
 			System.out.println("rename KO!!!");
 		}
+		*/
 			
+		Files.move(tempFilePath, foodFilePath, StandardCopyOption.REPLACE_EXISTING);
 		// print food list
 		printFood();
 	}
@@ -194,8 +187,6 @@ public class Food {
 		System.out.println(fileContent);
 		*/
 		
-		// essai modif / git
-		//File foodFile = new File(foodFileName);
 		FileReader fReader= new FileReader(foodFileName);
 		BufferedReader bReader= new BufferedReader(fReader);
 		// current read line
@@ -207,6 +198,9 @@ public class Food {
 				System.out.println(currentLine);
 			}
 		} while (currentLine != null);
+		
+		bReader.close();
+		fReader.close();
 		
 	}
 }
