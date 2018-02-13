@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * 
@@ -13,7 +13,7 @@ public class Food {
 
 	private static Scanner input = new Scanner(System.in);
 	private static String foodFileDir= "C:\\Users\\Utilisateur.UTILISA-8GFQHGM\\Documents\\Workspaces\\BD alimentaire\\";
-	private static String foodFileName= foodFileDir + "food_database.csv";
+	private static String foodFileName= foodFileDir + "foodBase.csv";
 
 	/**
 	 * 
@@ -55,10 +55,11 @@ public class Food {
 					break;
 					
 				case "0":
-					System.out.println("by by!");
+					System.out.println("bye bye!");
 					break;
 				
 				default:
+					System.out.println("Enlève tes moufles gros patapouf!");
 					break;
 			}
 
@@ -115,43 +116,69 @@ public class Food {
 		// string for food to delete
 		String delFood= "";
 		
+		/* on crée des variables de type File car on va manipuler 2 fichiers = le fichier de données 
+		   + 1 fichier temporaire  :
+		   1. lire ligne fichier données
+		   2. si ligne ne commence pas par l'aliment à supprimer, on écrit ligne dans fichier temp
+		   3. une fois le fichier données lu entièrement, le supprimer et renommer fichier temp en fichier données
+		 */
+		
 		// food file
 		File inputFile = new File(foodFileName);
+		
 		// temp file
 		File tempFile = new File(foodFileDir + "myTempFile.txt");
 		
-		//  bufferedreader for reading food file
-		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-		// current read line
+		// objects for reading food file
+		FileReader fReader= new FileReader(inputFile);
+		BufferedReader bReader = new BufferedReader(fReader);
 		String currentLine="";
 
-		//  bufferwriter for writing in temp file
-		BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+		//  objects for writing in temp file
+		FileWriter fWriter= new FileWriter(tempFile);
+		BufferedWriter bWriter = new BufferedWriter(fWriter);
 		
 		// input food to delete
 		System.out.println("food name?");
 		delFood= input.nextLine();
 
 		// making of temp file
-		while((currentLine= reader.readLine()) != null) {
-			// if current line doesn't start wih food to delete, write it in temp file
-			if (!(currentLine.startsWith(delFood))) {
+		do {
+			currentLine= bReader.readLine();
+			
+			// if current line is not null and doesn't start with food to delete, write it in temp file
+			if ( currentLine != null && !(currentLine.startsWith(delFood)) ) {
 				// write line in temp file
-				writer.write(currentLine);
-				writer.newLine();
+				bWriter.write(currentLine);
+				bWriter.newLine();
 			}
-		}
+
+		} while(currentLine != null);
 		
-		// close bufferwriter
-		reader.close();
-		writer.close();
+		// close
+		bReader.close();
+		bWriter.close();
+		fReader.close();
+		fWriter.close();
 
 		// remove old foodFile
-		inputFile.delete();
 		
+		/*
+		if (inputFile.delete()) {
+			System.out.println(foodFileName + " is deleted");
+		}
+		else {
+			System.out.println(foodFileName + " is not deleted!!!");
+		}
+		*/
+			
 		// rename temp file to foodFileName
-		tempFile.renameTo(inputFile);
-		
+		if (tempFile.renameTo(inputFile)) {
+			System.out.println("rename OK");
+		} else {
+			System.out.println("rename KO!!!");
+		}
+			
 		// print food list
 		printFood();
 	}
@@ -168,14 +195,18 @@ public class Food {
 		*/
 		
 		// essai modif / git
-		File foodFile = new File(foodFileName);
-		BufferedReader reader = new BufferedReader(new FileReader(foodFile));
+		//File foodFile = new File(foodFileName);
+		FileReader fReader= new FileReader(foodFileName);
+		BufferedReader bReader= new BufferedReader(fReader);
 		// current read line
 		String currentLine="";
 
-		while ((currentLine= reader.readLine()) != null) {
-			System.out.println(currentLine);
-		}
+		do {
+			currentLine= bReader.readLine();
+			if (currentLine != null) {
+				System.out.println(currentLine);
+			}
+		} while (currentLine != null);
 		
 	}
 }
