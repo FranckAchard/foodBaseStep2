@@ -15,7 +15,8 @@ public class Food {
 	private static Scanner input = new Scanner(System.in);
 	private static String foodFileDir= "C:\\Users\\Utilisateur.UTILISA-8GFQHGM\\Documents\\Workspaces\\BD alimentaire\\";
 	private static String foodFileName= foodFileDir + "foodBase.csv";
-
+	//private static String foodFileName= foodFileDir + "toto.csv";
+	
 	// main function
 	public static void main(String[] args) throws IOException {
 		String menuChoice= "";
@@ -120,12 +121,13 @@ public class Food {
 		Path foodFilePath= Paths.get(foodFileName);
 		BufferedReader bReader= Files.newBufferedReader(foodFilePath);
 		String currentLine="";
+		String[] currentLineSplit= new String[6];
 
 		//  objects for writing in temp file
 		//FileWriter fWriter= new FileWriter(tempFile);
 		//BufferedWriter bWriter = new BufferedWriter(fWriter);
-		Path tempFilePath = Paths.get("myTempFile.txt");
-		Files.createFile(tempFilePath);
+		Path tempFilePath = Files.createTempFile(Paths.get(foodFileDir), "myTempFile", ".txt");	
+		//Paths.get(foodFileDir + "myTempFile.txt");
 		BufferedWriter bWriter= Files.newBufferedWriter(tempFilePath, StandardOpenOption.WRITE);
 		
 		// input food to delete
@@ -135,14 +137,16 @@ public class Food {
 		// making of temp file
 		do {
 			currentLine= bReader.readLine();
-			
-			// if current line is not null and doesn't start with food to delete, write it in temp file
-			if ( currentLine != null && !(currentLine.startsWith(delFood)) ) {
-				// write line in temp file
-				bWriter.write(currentLine);
-				bWriter.newLine();
+			if (currentLine != null) {
+				currentLineSplit= currentLine.split(";");
+				// if current line doesn't start with food to delete, write it in temp file
+				if ( !(currentLineSplit[0].equals(delFood)) ) {
+					// write line in temp file
+					bWriter.write(currentLine);
+					bWriter.newLine();
+				}
 			}
-
+			
 		} while(currentLine != null);
 		
 		// close
@@ -187,20 +191,27 @@ public class Food {
 		System.out.println(fileContent);
 		*/
 		
-		FileReader fReader= new FileReader(foodFileName);
-		BufferedReader bReader= new BufferedReader(fReader);
-		// current read line
-		String currentLine="";
+		try {
+			
+			FileReader fReader= new FileReader(foodFileName);
+			BufferedReader bReader= new BufferedReader(fReader);
 
-		do {
-			currentLine= bReader.readLine();
-			if (currentLine != null) {
-				System.out.println(currentLine);
-			}
-		} while (currentLine != null);
-		
-		bReader.close();
-		fReader.close();
-		
+			// current read line
+			String currentLine="";
+
+			do {
+				currentLine= bReader.readLine();
+				if (currentLine != null) {
+					System.out.println(currentLine);
+				}
+			} while (currentLine != null);
+
+			bReader.close();
+			fReader.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Le fichier " + foodFileName + " n'existe pas, ça va planter!!");
+		}
+
 	}
 }
