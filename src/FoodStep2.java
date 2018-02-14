@@ -10,7 +10,7 @@ import java.util.*;
  * @author Utilisateur
  *
  */
-public class Food {
+public class FoodStep2 {
 	// class attributes
 	private static Scanner input = new Scanner(System.in);
 	private static String foodFileDir= "C:\\Users\\Utilisateur.UTILISA-8GFQHGM\\Documents\\Workspaces\\BD alimentaire\\";
