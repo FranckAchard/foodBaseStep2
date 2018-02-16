@@ -1,3 +1,4 @@
+package co.simplon.pf1.fooddb;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -13,8 +14,8 @@ import java.util.*;
 public class FoodStep2 {
 	// class attributes
 	private static Scanner input = new Scanner(System.in);
-	private static String foodFileDir= "C:\\Users\\Utilisateur.UTILISA-8GFQHGM\\Documents\\Workspaces\\BD alimentaire\\";
-	private static String foodFileName= foodFileDir + "foodBase.csv";
+	private static String foodFileDir= "C:\\Users\\Utilisateur.UTILISA-8GFQHGM\\Documents\\Workspaces\\BD alimentaire step2\\";
+	private static String foodFileName= foodFileDir + "aliments.csv";
 	//private static String foodFileName= foodFileDir + "toto.csv";
 	
 	// main function
@@ -25,9 +26,10 @@ public class FoodStep2 {
 			// display menu
 			System.out.println("\n");
 			System.out.println("Hello dear friend, what do you want to do?");
-			System.out.println("1. add food");
-			System.out.println("2. delete food");
-			System.out.println("3. print all food");
+			System.out.println("1. print food");
+			System.out.println("2. add food");
+			System.out.println("3. find food");
+			System.out.println("4. delete food");
 			System.out.println("0. quit");
 			
 			// get input then call assiocated subfunction
@@ -35,15 +37,19 @@ public class FoodStep2 {
 			
 			switch(menuChoice) {
 				case "1":
-					addFood();
+					printFood();
 					break;
 					
 				case "2":
-					deleteFood();
+					addFood();
 					break;
 					
 				case "3":
-					printFood();
+					findFood();
+					break;
+					
+				case "4":
+					deleteFood();
 					break;
 					
 				case "0":
@@ -51,7 +57,7 @@ public class FoodStep2 {
 					break;
 				
 				default:
-					System.out.println("Enlève tes moufles gros patapouf!");
+					System.out.println("Enlï¿½ve tes moufles gros patapouf!");
 					break;
 			}
 
@@ -108,11 +114,11 @@ public class FoodStep2 {
 		// string for food to delete
 		String delFood= "";
 		
-		/* on crée des variables de type File car on va manipuler 2 fichiers = le fichier de données 
+		/* on crï¿½e des variables de type File car on va manipuler 2 fichiers = le fichier de donnï¿½es 
 		   + 1 fichier temporaire  :
-		   1. lire ligne fichier données
-		   2. si ligne ne commence pas par l'aliment à supprimer, on écrit ligne dans fichier temp
-		   3. une fois le fichier données lu entièrement, le supprimer et renommer fichier temp en fichier données
+		   1. lire ligne fichier donnï¿½es
+		   2. si ligne ne commence pas par l'aliment ï¿½ supprimer, on ï¿½crit ligne dans fichier temp
+		   3. une fois le fichier donnï¿½es lu entiï¿½rement, le supprimer et renommer fichier temp en fichier donnï¿½es
 		 */
 				
 		// objects for reading food file
@@ -130,12 +136,13 @@ public class FoodStep2 {
 		delFood= input.nextLine();
 
 		// making of temp file
+
 		do {
 			currentLine= bReader.readLine();
 			if (currentLine != null) {
-				currentLineSplit= currentLine.split(";");
+				currentLineSplit= currentLine.split(";", 6);
 				// if current line doesn't start with food to delete, write it in temp file
-				if ( !(currentLineSplit[0].equals(delFood)) ) {
+				if ( currentLineSplit[0] != null && !(currentLineSplit[0].equals(delFood)) ) {
 					// write line in temp file
 					bWriter.write(currentLine);
 					bWriter.newLine();
@@ -170,7 +177,7 @@ public class FoodStep2 {
 		}
 		*/
 			
-		Files.move(tempFilePath, foodFilePath, StandardCopyOption.REPLACE_EXISTING);
+		Files.move(tempFilePath, foodFilePath, StandardCopyOption.ATOMIC_MOVE);
 		// print food list
 		printFood();
 	}
@@ -193,10 +200,12 @@ public class FoodStep2 {
 
 			// current read line
 			String currentLine="";
+		    //PrintStream out = new PrintStream(System.out, true, "UTF-8");
 
 			do {
 				currentLine= bReader.readLine();
-				if (currentLine != null) {
+				if (currentLine != null) {				
+				    //out.println(currentLine);
 					System.out.println(currentLine);
 				}
 			} while (currentLine != null);
@@ -205,8 +214,31 @@ public class FoodStep2 {
 			fReader.close();
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("Le fichier " + foodFileName + " n'existe pas, ça va planter!!");
+			System.out.println("Le fichier " + foodFileName + " n'existe pas, ï¿½a va planter!!");
 		}
 
+	}
+	
+	private static void findFood() {
+		/* 
+		 * Faire saisir categorieSaisie
+		 * compteur = 0
+		 * listeAliments = ""
+		 * Tant que fichier a des lignes
+		 * 		Lire ligne
+		 * 		Splitter ligne
+		 * 		aliment = 1er element		
+		 * 		categorieLue = 2e element
+		 * 		Si categorieLue ~ categorieSaisie
+		 * 			compteur += 1
+		 * 			listeAliments += aliment + saut ligne
+		 * 	Afficher compteur
+		 * 	Demander si affichage liste, si oui afficher
+		 */
+		
+		// food counter
+		int countFood=0;
+		// input kind of food
+		String inputKind;
 	}
 }
