@@ -37,7 +37,7 @@ public class FoodStep2 {
 			
 			switch(menuChoice) {
 				case "1":
-					printFood();
+					printAllFood();
 					break;
 					
 				case "2":
@@ -66,6 +66,43 @@ public class FoodStep2 {
 		input.close();
 	}
 
+	private static void printAllFood() throws IOException {
+		/*
+		String fileContent= "";
+		Scanner scanner= new Scanner(new File(foodFileName));
+		while (scanner.hasNextLine()) {
+			fileContent += scanner.nextLine() + "\n";
+		}
+		scanner.close();
+		System.out.println(fileContent);
+		*/
+		
+		try {
+			
+			FileReader fReader= new FileReader(foodFileName);
+			BufferedReader bReader= new BufferedReader(fReader);
+
+			// current read line
+			String currentLine="";
+		    //PrintStream out = new PrintStream(System.out, true, "UTF-8");
+
+			do {
+				currentLine= bReader.readLine();
+				if (currentLine != null) {				
+				    //out.println(currentLine);
+					System.out.println(currentLine);
+				}
+			} while (currentLine != null);
+
+			bReader.close();
+			fReader.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Le fichier " + foodFileName + " n'existe pas, �a va planter!!");
+		}
+
+	}
+
 	private static void addFood() throws IOException {
 		// string for new food input
 		String newFood= "";
@@ -78,7 +115,7 @@ public class FoodStep2 {
 		newFood= input.nextLine();
 		newFood+= ";";
 		
-		System.out.println("kind of food?");
+		System.out.println("category of food?");
 		newFood+= input.nextLine();
 		newFood+= ";";
 
@@ -106,10 +143,40 @@ public class FoodStep2 {
 		writer.close();
 		
 		// print food list
-		printFood();
+		printAllFood();
 
 	}
 	
+	private static void findFood() {
+		/* 
+		 * Faire saisir categorieSaisie
+		 * compteur = 0
+		 * listeAliments = ""
+		 * Tant que fichier a des lignes
+		 * 		Lire ligne
+		 * 		Splitter ligne
+		 * 		aliment = 1er element		
+		 * 		categorieLue = 2e element
+		 * 		Si categorieLue ~ categorieSaisie
+		 * 			compteur += 1
+		 * 			listeAliments += aliment + saut ligne
+		 * 	Afficher compteur
+		 * 	Demander si affichage liste, si oui afficher
+		 */
+		
+		// food counter
+		int countFood=0;
+		
+		// input kind of food
+		String inputCategory;
+		System.out.println("food category?");
+		inputCategory= input.nextLine();
+		
+		
+		
+		
+	}
+
 	private static void deleteFood() throws IOException {
 		// string for food to delete
 		String delFood= "";
@@ -179,66 +246,8 @@ public class FoodStep2 {
 			
 		Files.move(tempFilePath, foodFilePath, StandardCopyOption.ATOMIC_MOVE);
 		// print food list
-		printFood();
+		printAllFood();
 	}
 	
-	private static void printFood() throws IOException {
-		/*
-		String fileContent= "";
-		Scanner scanner= new Scanner(new File(foodFileName));
-		while (scanner.hasNextLine()) {
-			fileContent += scanner.nextLine() + "\n";
-		}
-		scanner.close();
-		System.out.println(fileContent);
-		*/
-		
-		try {
-			
-			FileReader fReader= new FileReader(foodFileName);
-			BufferedReader bReader= new BufferedReader(fReader);
-
-			// current read line
-			String currentLine="";
-		    //PrintStream out = new PrintStream(System.out, true, "UTF-8");
-
-			do {
-				currentLine= bReader.readLine();
-				if (currentLine != null) {				
-				    //out.println(currentLine);
-					System.out.println(currentLine);
-				}
-			} while (currentLine != null);
-
-			bReader.close();
-			fReader.close();
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("Le fichier " + foodFileName + " n'existe pas, �a va planter!!");
-		}
-
-	}
 	
-	private static void findFood() {
-		/* 
-		 * Faire saisir categorieSaisie
-		 * compteur = 0
-		 * listeAliments = ""
-		 * Tant que fichier a des lignes
-		 * 		Lire ligne
-		 * 		Splitter ligne
-		 * 		aliment = 1er element		
-		 * 		categorieLue = 2e element
-		 * 		Si categorieLue ~ categorieSaisie
-		 * 			compteur += 1
-		 * 			listeAliments += aliment + saut ligne
-		 * 	Afficher compteur
-		 * 	Demander si affichage liste, si oui afficher
-		 */
-		
-		// food counter
-		int countFood=0;
-		// input kind of food
-		String inputKind;
-	}
 }
