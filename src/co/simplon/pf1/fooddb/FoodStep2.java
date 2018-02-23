@@ -22,6 +22,14 @@ public class FoodStep2 {
 	public static void main(String[] args) throws IOException {
 		String menuChoice= "";
 		
+		/* 
+		 //tests classe Food
+		Food myFood1 = new Food("abricot", "fruit", 1, 2, 3, 4);
+		System.out.println(myFood1);
+		Food myFood2 = new Food("Sirop d'agave;Sucreries/Sucres et édulcorants;293;0.2;73.1;0");
+		System.out.println(myFood2);
+		 */
+		
 		do {
 			// display menu
 			System.out.println("\n");
@@ -67,16 +75,30 @@ public class FoodStep2 {
 	}
 
 	private static void printAllFood() throws IOException {
-		/*
-		String fileContent= "";
+
+		/* tant que ligne existe
+		 * lire ligne
+		 * construire une instance Food
+		 * afficher Food
+		 * 
+		 */
+		int numLine=1;
+		String fileRecord= "";
+		
 		Scanner scanner= new Scanner(new File(foodFileName));
+		
 		while (scanner.hasNextLine()) {
-			fileContent += scanner.nextLine() + "\n";
+			System.out.println("num line : " + numLine);
+			fileRecord = scanner.nextLine();
+			if (numLine >= 4) {
+				Food food = new Food(fileRecord);
+				System.out.println(food);
+			}
+			numLine++;
 		}
 		scanner.close();
-		System.out.println(fileContent);
-		*/
 		
+		/*
 		try {
 			
 			FileReader fReader= new FileReader(foodFileName);
@@ -100,6 +122,7 @@ public class FoodStep2 {
 		} catch (FileNotFoundException e) {
 			System.out.println("Le fichier " + foodFileName + " n'existe pas, �a va planter!!");
 		}
+		*/
 
 	}
 
