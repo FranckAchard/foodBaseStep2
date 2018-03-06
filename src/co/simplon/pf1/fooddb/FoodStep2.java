@@ -40,7 +40,7 @@ public class FoodStep2 {
 			System.out.println("4. delete food");
 			System.out.println("0. quit");
 			
-			// get input then call assiocated subfunction
+			// get input then call assiociated subfunction
 			menuChoice = input.nextLine();
 			
 			switch(menuChoice) {

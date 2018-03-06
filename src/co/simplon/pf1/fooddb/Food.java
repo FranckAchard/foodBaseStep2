@@ -3,13 +3,14 @@ package co.simplon.pf1.fooddb;
 import java.util.*;
 
 public class Food {
+	// food attributes
 	private String name;
 	private String category;
 	private double energetic;
 	private double protein;
 	private double carbohydrate;
 	private double lipid;
-	public static final int NB_FOOD_FEATURE=6;
+	public static final int NB_FOOD_ATTRIBUTES=6;
 	
 	// get & set methods
 	public String getName() {
@@ -101,7 +102,7 @@ public class Food {
 	// constructor from database record
 	public Food(String databaserecord) {
 		// format = name;category;energetic;protein;carbohydrate;lipid
-		String[] splitFood= databaserecord.split(";", NB_FOOD_FEATURE);
+		String[] splitFood= databaserecord.split(";", NB_FOOD_ATTRIBUTES);
 		this.name = splitFood[0];
 		this.category = splitFood[1];
 		this.energetic = Double.parseDouble(splitFood[2].replace(',', '.'));
@@ -110,6 +111,7 @@ public class Food {
 		this.lipid = Double.parseDouble(splitFood[5].replace(',', '.'));
 	}
 	
+	// method for parsing a CSV line
 	public static List<String> parseCsvLine(String csvLine) {
 		
 		List<String> result = new ArrayList<>();
