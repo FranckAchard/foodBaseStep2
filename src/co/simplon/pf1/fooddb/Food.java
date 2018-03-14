@@ -10,7 +10,9 @@ public class Food {
 	private double protein;
 	private double carbohydrate;
 	private double lipid;
-	public static final int NB_FOOD_ATTRIBUTES=6;
+	private static final int NB_FOOD_ATTRIBUTES=6;
+	private static final char CSV_SEPARATOR= ';';
+	private static final char CSV_QUOTE= '"';
 	
 	// get & set methods
 	public String getName() {
@@ -102,23 +104,37 @@ public class Food {
 	// constructor from database record
 	public Food(String databaserecord) {
 		// format = name;category;energetic;protein;carbohydrate;lipid
-		String[] splitFood= databaserecord.split(";", NB_FOOD_ATTRIBUTES);
-		this.name = splitFood[0];
-		this.category = splitFood[1];
-		this.energetic = Double.parseDouble(splitFood[2].replace(',', '.'));
-		this.protein = Double.parseDouble(splitFood[3].replace(',', '.'));
-		this.carbohydrate = Double.parseDouble(splitFood[4].replace(',', '.'));
-		this.lipid = Double.parseDouble(splitFood[5].replace(',', '.'));
+		//String[] splitFood= databaserecord.split(";", NB_FOOD_ATTRIBUTES);
+		List<String> splitFood= new ArrayList<>();
+		splitFood= parseCsvLine(databaserecord);
+		this.name = splitFood.get(0);
+		this.category = splitFood.get(1);
+		this.energetic = Double.parseDouble(splitFood.get(2).replace(',', '.'));
+		this.protein = Double.parseDouble(splitFood.get(3).replace(',', '.'));
+		this.carbohydrate = Double.parseDouble(splitFood.get(4).replace(',', '.'));
+		this.lipid = Double.parseDouble(splitFood.get(5).replace(',', '.'));
 	}
 	
 	// method for parsing a CSV line
+	
 	public static List<String> parseCsvLine(String csvLine) {
 		
+		char separators= ';';
+		char customQuote= '"';
+		
+		// List of strings storing CSV line fields
 		List<String> result = new ArrayList<>();
-
+		
+		// current CSV line field built by parsing
 		StringBuffer curVal = new StringBuffer();
+		
+		// tells if we're between quotes
 		boolean inQuotes = false;
+		
+		// not yet understood...
 		boolean startCollectChar = false;
+		
+		// 
 		boolean doubleQuotesInColumn = false;
 
 		char[] chars = csvLine.toCharArray();
@@ -176,5 +192,6 @@ public class Food {
 
 		return result;
 	}
+	
 
 }
